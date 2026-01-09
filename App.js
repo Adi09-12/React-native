@@ -616,7 +616,7 @@ const ActionCard = ({ icon, image, count, label, color }) => (
 
 const TabIcon = ({ icon, image, active, onPress }) => (
   <TouchableOpacity onPress={onPress} style={{ alignItems: 'center', justifyContent: 'center', flex: 1, height: '100%' }}>
-    {active && <View style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 4, backgroundColor: '#432C81' }} />}
+    {active && <View style={{ position: 'absolute', top: 0, width: scale(40), height: 4, backgroundColor: '#432C81', borderBottomLeftRadius: 4, borderBottomRightRadius: 4 }} />}
     {image ? (
       <Image source={image} style={{ width: scale(24), height: scale(24), tintColor: active ? '#432C81' : '#6B7280' }} resizeMode="contain" />
     ) : (
