@@ -10,10 +10,21 @@ import { Ionicons } from '@expo/vector-icons';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 const CONTENT_WIDTH = '91%';
+const MAX_CONTENT_WIDTH = 480;
 
-
+// --- Scaling Helpers ---
+const scale = (size) => (SCREEN_WIDTH > MAX_CONTENT_WIDTH ? MAX_CONTENT_WIDTH : SCREEN_WIDTH) / 375 * size;
 
 // --- Helper Components ---
+
+const ResponsiveWrapper = ({ children, style, dark }) => (
+  <View style={[{ flex: 1, backgroundColor: dark ? '#432C81' : '#F8FAFC', alignItems: 'center' }, style]}>
+    <View style={{ width: '100%', maxWidth: MAX_CONTENT_WIDTH, flex: 1 }}>
+      {children}
+    </View>
+  </View>
+);
+
 
 const RoleButton = ({ title, subtitle, onPress }) => (
   <TouchableOpacity
@@ -107,9 +118,10 @@ const SignInScreen = ({ onSignUpClick, onSignIn, onBack }) => {
   const insets = useSafeAreaInsets();
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#F8FAFC' }}>
+    <ResponsiveWrapper>
       <StatusBar style="dark" />
 
+      {/* Back Button Container */}
       <View style={{ position: 'absolute', top: insets.top + 16, left: '4.5%', zIndex: 10 }}>
         <TouchableOpacity
           onPress={onBack}
@@ -119,22 +131,22 @@ const SignInScreen = ({ onSignUpClick, onSignIn, onBack }) => {
         </TouchableOpacity>
       </View>
 
-      <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: 'center', paddingHorizontal: '4.5%', paddingTop: insets.top + 80, paddingBottom: 40 }} showsVerticalScrollIndicator={false}>
+      <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: 'center', paddingHorizontal: '4.5%', paddingTop: insets.top + scale(80), paddingBottom: 40 }} showsVerticalScrollIndicator={false}>
         <View style={{ width: '100%', alignItems: 'center' }}>
-          <View style={{ width: 48, height: 48, backgroundColor: '#000000', borderRadius: 0, marginBottom: 32, alignItems: 'center', justifyContent: 'center' }}>
-            <View style={{ width: 6, height: 6, backgroundColor: 'rgba(255, 255, 255, 0.2)', borderRadius: 0 }} />
+          <View style={{ width: scale(48), height: scale(48), backgroundColor: '#000000', borderRadius: 0, marginBottom: scale(32), alignItems: 'center', justifyContent: 'center' }}>
+            <View style={{ width: scale(6), height: scale(6), backgroundColor: 'rgba(255, 255, 255, 0.2)', borderRadius: 0 }} />
           </View>
 
-          <View style={{ alignItems: 'center', marginBottom: 40, width: '100%' }}>
-            <Text style={{ fontFamily: 'Inter', fontWeight: '600', fontSize: 24, lineHeight: 29, color: '#111827', textAlign: 'center', marginBottom: 12 }}>
+          <View style={{ alignItems: 'center', marginBottom: scale(40), width: '100%' }}>
+            <Text style={{ fontFamily: 'Inter', fontWeight: '600', fontSize: scale(24), lineHeight: scale(29), color: '#111827', textAlign: 'center', marginBottom: scale(12) }}>
               Sign In
             </Text>
-            <Text style={{ fontFamily: 'Inter', fontWeight: '400', fontSize: 16, lineHeight: 19, color: '#6B7280', textAlign: 'center' }}>
+            <Text style={{ fontFamily: 'Inter', fontWeight: '400', fontSize: scale(16), lineHeight: scale(19), color: '#6B7280', textAlign: 'center' }}>
               Control your schedule with precision
             </Text>
           </View>
 
-          <View style={{ width: '100%', gap: 24 }}>
+          <View style={{ width: '100%', gap: scale(24) }}>
             <AuthInput
               label="Email Address"
               placeholder="Enter your email..."
@@ -153,15 +165,15 @@ const SignInScreen = ({ onSignUpClick, onSignIn, onBack }) => {
             />
             <TouchableOpacity
               onPress={onSignIn}
-              style={{ height: 56, backgroundColor: '#432C81', borderRadius: 8, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 14 }}
+              style={{ height: 56, backgroundColor: '#432C81', borderRadius: 8, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: scale(14) }}
             >
-              <Text style={{ color: '#FFFFFF', fontSize: 16, fontWeight: '600', lineHeight: 19 }}>Sign In</Text>
+              <Text style={{ color: '#FFFFFF', fontSize: scale(16), fontWeight: '600', lineHeight: scale(19) }}>Sign In</Text>
               <Ionicons name="arrow-forward-outline" size={20} color="white" />
             </TouchableOpacity>
 
-            <View style={{ height: 1, backgroundColor: '#E5E7EB', marginVertical: 8 }} />
+            <View style={{ height: 1, backgroundColor: '#E5E7EB', marginVertical: scale(8) }} />
 
-            <View style={{ flexDirection: 'row', gap: 8 }}>
+            <View style={{ flexDirection: 'row', gap: scale(8) }}>
               <TouchableOpacity style={{ flex: 1, height: 56, backgroundColor: '#F3F4F6', borderRadius: 8, borderWidth: 0.5, borderColor: '#E5E7EB', alignItems: 'center', justifyContent: 'center' }}>
                 <Ionicons name="logo-google" size={24} color="#000" />
               </TouchableOpacity>
@@ -170,18 +182,20 @@ const SignInScreen = ({ onSignUpClick, onSignIn, onBack }) => {
               </TouchableOpacity>
             </View>
 
-            <View style={{ alignItems: 'center', gap: 12, marginTop: 12 }}>
+            <View style={{ alignItems: 'center', gap: scale(12), marginTop: scale(12) }}>
               <TouchableOpacity onPress={onSignUpClick}>
-                <Text style={{ color: '#6B7280', fontSize: 16, textAlign: 'center' }}>
+                <Text style={{ color: '#6B7280', fontSize: scale(16), textAlign: 'center' }}>
                   Don’t have an account? <Text style={{ color: '#432C81' }}>Sign Up</Text>
                 </Text>
               </TouchableOpacity>
-              <Text style={{ color: '#432C81', fontSize: 16, textAlign: 'center' }}>Forgot Password</Text>
+              <Text style={{ color: '#432C81', fontSize: scale(16), textAlign: 'center' }}>Forgot Password</Text>
             </View>
           </View>
         </View>
       </ScrollView>
-    </View>
+    </ResponsiveWrapper>
+
+
   );
 };
 
@@ -205,7 +219,8 @@ const SignUpScreen = ({ onSignInClick, onSignUp, onBack }) => {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#F8FAFC' }}>
+    <ResponsiveWrapper>
+
       <StatusBar style="dark" />
 
       <View style={{ position: 'absolute', top: insets.top + 16, left: '4.5%', zIndex: 10 }}>
@@ -291,9 +306,10 @@ const SignUpScreen = ({ onSignInClick, onSignUp, onBack }) => {
           </View>
         </View>
       </ScrollView>
-    </View>
+    </ResponsiveWrapper>
   );
 };
+
 
 
 // --- KYC Screen ---
@@ -302,78 +318,75 @@ const KYCScreen = ({ onBack, onSubmit }) => {
   const insets = useSafeAreaInsets();
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#F8FAFC' }}>
+    <ResponsiveWrapper>
       <StatusBar style="dark" />
 
       {/* Top Nav */}
-      <View style={{ paddingTop: insets.top + 16, paddingHorizontal: '4.5%', flexDirection: 'row', alignItems: 'center', gap: 12, marginBottom: 24 }}>
+      <View style={{ paddingTop: insets.top + 16, paddingHorizontal: '4.5%', flexDirection: 'row', alignItems: 'center', gap: scale(12), marginBottom: scale(24) }}>
         <TouchableOpacity
           onPress={onBack}
           style={{ width: 48, height: 48, backgroundColor: '#F3F4F6', borderWidth: 1, borderColor: '#E5E7EB', borderRadius: 7, alignItems: 'center', justifyContent: 'center' }}
         >
           <Ionicons name="chevron-back-outline" size={24} color="#1F2937" />
         </TouchableOpacity>
-        <Text style={{ fontFamily: 'Inter', fontWeight: '600', fontSize: 24, lineHeight: 29, fontStyle: 'semibold', color: '#111827', flex: 1 }}>
+        <Text style={{ fontFamily: 'Inter', fontWeight: '600', fontSize: scale(24), lineHeight: scale(29), fontStyle: 'semibold', color: '#111827', flex: 1 }}>
           Doctor Registration
         </Text>
       </View>
 
       <ScrollView contentContainerStyle={{ flexGrow: 1, paddingHorizontal: '4.5%', paddingBottom: insets.bottom + 16 }} showsVerticalScrollIndicator={false}>
         <View style={{ flex: 1, justifyContent: 'space-between' }}>
-          <View style={{ gap: 24 }}>
+          <View style={{ gap: scale(24) }}>
             {/* Get Verified Card */}
-            <View style={{ width: '100%', backgroundColor: 'rgba(125, 214, 103, 0.2)', borderRadius: 12, flexDirection: 'row', alignItems: 'center', padding: 15, gap: 15 }}>
-              <View style={{ width: 56, height: 56, backgroundColor: '#7DD667', borderRadius: 28, alignItems: 'center', justifyContent: 'center' }}>
+            <View style={{ width: '100%', backgroundColor: 'rgba(125, 214, 103, 0.2)', borderRadius: 12, flexDirection: 'row', alignItems: 'center', padding: scale(15), gap: scale(15) }}>
+              <View style={{ width: scale(56), height: scale(56), backgroundColor: '#7DD667', borderRadius: scale(28), alignItems: 'center', justifyContent: 'center' }}>
                 <Ionicons name="shield-outline" size={24} color="#FFFFFF" />
               </View>
-              <View style={{ flex: 1, gap: 9 }}>
-                <Text style={{ fontFamily: 'Inter', fontWeight: '600', fontSize: 20, lineHeight: 24, color: '#111827' }}>
+              <View style={{ flex: 1, gap: scale(9) }}>
+                <Text style={{ fontFamily: 'Inter', fontWeight: '600', fontSize: scale(20), lineHeight: scale(24), color: '#111827' }}>
                   Get Verified
                 </Text>
-                <Text style={{ fontFamily: 'Inter', fontWeight: '400', fontSize: 14, lineHeight: 18, color: '#6B7280' }}>
+                <Text style={{ fontFamily: 'Inter', fontWeight: '400', fontSize: scale(14), lineHeight: scale(18), color: '#6B7280' }}>
                   Verify your identity to gain a trust badge and increase your credibility with service providers.
                 </Text>
               </View>
             </View>
 
             {/* Digilocker Button */}
-            <TouchableOpacity style={{ width: '100%', height: 50, backgroundColor: '#FFFFFF', borderWidth: 1, borderColor: '#432C81', borderRadius: 8, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
+            <TouchableOpacity style={{ width: '100%', height: 50, backgroundColor: '#FFFFFF', borderWidth: 1, borderColor: '#432C81', borderRadius: 8, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: scale(8) }}>
               <Ionicons name="person-circle-outline" size={20} color="#432C81" />
-              <Text style={{ fontFamily: 'Inter', fontWeight: '600', fontSize: 16, lineHeight: 19, color: '#432C81' }}>
+              <Text style={{ fontFamily: 'Inter', fontWeight: '600', fontSize: scale(16), lineHeight: scale(19), color: '#432C81' }}>
                 Verify with Digilocker
               </Text>
             </TouchableOpacity>
           </View>
 
-          <View style={{ gap: 35, marginTop: 40 }}>
+          <View style={{ gap: scale(35), marginTop: scale(40) }}>
             <TouchableOpacity
               onPress={onSubmit}
-              style={{ height: 56, backgroundColor: '#432C81', borderRadius: 8, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 14 }}
+              style={{ height: 56, backgroundColor: '#432C81', borderRadius: 8, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: scale(14) }}
             >
-              <Text style={{ color: '#FFFFFF', fontSize: 16, fontWeight: '600', lineHeight: 19 }}>Submit</Text>
+              <Text style={{ color: '#FFFFFF', fontSize: scale(16), fontWeight: '600', lineHeight: scale(19) }}>Submit</Text>
               <Ionicons name="arrow-forward-outline" size={24} color="white" />
             </TouchableOpacity>
 
-            <Text style={{ fontFamily: 'Inter', fontWeight: '400', fontSize: 14, lineHeight: 18, color: '#6B7280', textAlign: 'center' }}>
+            <Text style={{ fontFamily: 'Inter', fontWeight: '400', fontSize: scale(14), lineHeight: scale(18), color: '#6B7280', textAlign: 'center' }}>
               By Proceeding forward, you agree to the <Text style={{ color: '#432C81' }}>Privacy Policy</Text> and <Text style={{ color: '#432C81' }}>Terms & Conditions</Text>
             </Text>
           </View>
         </View>
       </ScrollView>
-
-
-      {/* Home Indicator Placeholder */}
-      <View style={{ position: 'absolute', bottom: insets.bottom + 8, left: (SCREEN_WIDTH - 134) / 2, width: 134, height: 5, backgroundColor: '#1F2937', borderRadius: 2.5 }} />
-    </View>
+    </ResponsiveWrapper>
   );
 };
 
 
+
 // --- Profile Management Screen ---
 
-const ProfileInput = ({ label, placeholder, multiline, height = 51, isDropdown, value, onChangeText }) => (
-  <View style={{ width: '100%', gap: 8 }}>
-    <Text style={{ fontFamily: 'Inter', fontWeight: '400', fontSize: 14, lineHeight: 17, color: '#111827' }}>{label}</Text>
+const ProfileInput = ({ label, placeholder, multiline, height = scale(51), isDropdown, value, onChangeText }) => (
+  <View style={{ width: '100%', gap: scale(8) }}>
+    <Text style={{ fontFamily: 'Inter', fontWeight: '400', fontSize: scale(14), lineHeight: scale(17), color: '#111827' }}>{label}</Text>
     <View style={{
       width: '100%',
       height: height,
@@ -383,11 +396,11 @@ const ProfileInput = ({ label, placeholder, multiline, height = 51, isDropdown, 
       borderRadius: 8,
       flexDirection: 'row',
       alignItems: multiline ? 'flex-start' : 'center',
-      paddingHorizontal: 16,
-      paddingVertical: multiline ? 16 : 0
+      paddingHorizontal: scale(16),
+      paddingVertical: multiline ? scale(16) : 0
     }}>
       <TextInput
-        style={{ flex: 1, color: '#111827', fontSize: 16, fontWeight: '600', outlineStyle: 'none', textAlignVertical: multiline ? 'top' : 'center' }}
+        style={{ flex: 1, color: '#111827', fontSize: scale(16), fontWeight: '600', outlineStyle: 'none', textAlignVertical: multiline ? 'top' : 'center' }}
         placeholder={placeholder}
         placeholderTextColor="#6B7280"
         multiline={multiline}
@@ -400,17 +413,19 @@ const ProfileInput = ({ label, placeholder, multiline, height = 51, isDropdown, 
   </View>
 );
 
+
 const ProfileManagementScreen = ({ onBack, onOpenSearch, selectedCategory }) => {
   const insets = useSafeAreaInsets();
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#F8FAFC' }}>
+    <ResponsiveWrapper>
       <StatusBar style="dark" />
       <ScrollView
         contentContainerStyle={{ paddingBottom: insets.bottom + 40, paddingHorizontal: '4.5%', paddingTop: insets.top + 16 }}
         style={{ flex: 1 }}
         showsVerticalScrollIndicator={false}
       >
+
         <View style={{ gap: 24, alignItems: 'center' }}>
 
           {/* Top Nav */}
@@ -479,11 +494,11 @@ const ProfileManagementScreen = ({ onBack, onOpenSearch, selectedCategory }) => 
 
         </View>
       </ScrollView>
-      {/* Home Indicator */}
-      <View style={{ position: 'absolute', bottom: insets.bottom + 8, left: (SCREEN_WIDTH - 134) / 2, width: 134, height: 5, backgroundColor: '#1F2937', borderRadius: 2.5 }} />
-    </View>
+    </ResponsiveWrapper>
   );
 };
+
+
 
 
 // --- Category Search Screen ---
@@ -500,18 +515,18 @@ const CategorySearchScreen = ({ onBack, onSelect }) => {
   const insets = useSafeAreaInsets();
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#F8FAFC' }}>
+    <ResponsiveWrapper>
       <StatusBar style="dark" />
 
       {/* Top Nav */}
-      <View style={{ paddingTop: insets.top + 16, paddingHorizontal: '4.5%', flexDirection: 'row', alignItems: 'center', gap: 12, marginBottom: 24 }}>
+      <View style={{ paddingTop: insets.top + 16, paddingHorizontal: '4.5%', flexDirection: 'row', alignItems: 'center', gap: scale(12), marginBottom: scale(24) }}>
         <TouchableOpacity
           onPress={onBack}
           style={{ width: 48, height: 48, backgroundColor: '#F3F4F6', borderWidth: 1, borderColor: '#E5E7EB', borderRadius: 7, alignItems: 'center', justifyContent: 'center' }}
         >
           <Ionicons name="chevron-back-outline" size={24} color="#111827" />
         </TouchableOpacity>
-        <Text style={{ fontFamily: 'Inter', fontWeight: '600', fontSize: 20, lineHeight: 24, color: '#111827', flex: 1 }}>
+        <Text style={{ fontFamily: 'Inter', fontWeight: '600', fontSize: scale(20), lineHeight: scale(24), color: '#111827', flex: 1 }}>
           Search Your Category
         </Text>
       </View>
@@ -527,18 +542,18 @@ const CategorySearchScreen = ({ onBack, onSelect }) => {
           borderRadius: 8,
           flexDirection: 'row',
           alignItems: 'center',
-          paddingHorizontal: 16,
-          gap: 8,
+          paddingHorizontal: scale(16),
+          gap: scale(8),
           shadowColor: '#000',
           shadowOffset: { width: 0, height: 4 },
           shadowOpacity: 0.09,
           shadowRadius: 37.7,
           elevation: 5,
-          marginBottom: 24
+          marginBottom: scale(24)
         }}>
           <Ionicons name="search-outline" size={24} color="#1D202F" />
           <TextInput
-            style={{ flex: 1, fontSize: 16, color: '#111827', outlineStyle: 'none' }}
+            style={{ flex: 1, fontSize: scale(16), color: '#111827', outlineStyle: 'none' }}
             placeholder="Search"
             placeholderTextColor="#6B7280"
           />
@@ -546,14 +561,14 @@ const CategorySearchScreen = ({ onBack, onSelect }) => {
 
         {/* Category List */}
         <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-          <View style={{ gap: 4 }}>
+          <View style={{ gap: scale(4) }}>
             {categories.map((cat, index) => (
               <View key={cat} style={{ width: '100%' }}>
                 <TouchableOpacity
                   onPress={() => onSelect(cat)}
-                  style={{ width: '100%', height: 48, justifyContent: 'center' }}
+                  style={{ width: '100%', height: scale(48), justifyContent: 'center' }}
                 >
-                  <Text style={{ fontFamily: 'Inter', fontWeight: '400', fontSize: 16, color: '#111827' }}>{cat}</Text>
+                  <Text style={{ fontFamily: 'Inter', fontWeight: '400', fontSize: scale(16), color: '#111827' }}>{cat}</Text>
                 </TouchableOpacity>
                 {index < categories.length - 1 && (
                   <View style={{ width: '100%', height: 0.5, backgroundColor: '#E5E7EB' }} />
@@ -563,10 +578,7 @@ const CategorySearchScreen = ({ onBack, onSelect }) => {
           </View>
         </ScrollView>
       </View>
-
-      {/* Home Indicator */}
-      <View style={{ position: 'absolute', bottom: insets.bottom + 8, left: (SCREEN_WIDTH - 134) / 2, width: 134, height: 5, backgroundColor: '#1F2937', borderRadius: 2.5 }} />
-    </View>
+    </ResponsiveWrapper>
   );
 };
 
@@ -666,71 +678,72 @@ function AppContent() {
 
   if (step === 0) {
     return (
-      <View style={{ flex: 1, backgroundColor: '#F8FAFC', alignItems: 'center', justifyContent: 'center' }}>
-        <StatusBar style="dark" />
-        <View
-          style={{
-            width: 217,
-            height: 76,
-            backgroundColor: '#5D5980',
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center',
-            paddingHorizontal: 26,
-            paddingVertical: 20
-          }}
-        >
-          <Text style={{
-            fontFamily: 'Inter',
-            fontWeight: '500',
-            fontSize: 25,
-            lineHeight: 30,
-            color: '#FFFFFF',
-            textAlign: 'center'
-          }}>
-            Logo
-          </Text>
+      <ResponsiveWrapper>
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+          <StatusBar style="dark" />
+          <View
+            style={{
+              width: scale(217),
+              height: scale(76),
+              backgroundColor: '#5D5980',
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}
+          >
+            <Text style={{
+              fontFamily: 'Inter',
+              fontWeight: '500',
+              fontSize: scale(25),
+              lineHeight: scale(30),
+              color: '#FFFFFF',
+              textAlign: 'center'
+            }}>
+              Logo
+            </Text>
+          </View>
         </View>
-      </View>
+      </ResponsiveWrapper>
     );
   }
 
   if (isLoadingPhase) {
     return (
-      <View style={{ flex: 1, backgroundColor: '#432C81' }}>
-        <StatusBar style="light" />
+      <ResponsiveWrapper dark>
+        <View style={{ flex: 1 }}>
+          <StatusBar style="light" />
 
-        {/* Vectors from CSS */}
-        <View style={{ position: 'absolute', width: 32, height: '50%', left: '25%', bottom: 0, backgroundColor: '#6B7280', opacity: 0.5 }} />
-        <View style={{ position: 'absolute', width: 32, height: '25%', right: 0, bottom: 0, backgroundColor: '#6B7280', opacity: 0.3 }} />
-        <View style={{ position: 'absolute', width: 32, height: '25%', right: '30%', top: 0, backgroundColor: '#6B7280', opacity: 0.5, transform: [{ scaleY: -1 }] }} />
-        <View style={{ position: 'absolute', width: 32, height: '35%', left: 0, top: '10%', backgroundColor: '#6B7280', opacity: 0.3, transform: [{ scaleY: -1 }] }} />
+          {/* Vectors from CSS */}
+          <View style={{ position: 'absolute', width: 32, height: '50%', left: '25%', bottom: 0, backgroundColor: '#6B7280', opacity: 0.5 }} />
+          <View style={{ position: 'absolute', width: 32, height: '25%', right: 0, bottom: 0, backgroundColor: '#6B7280', opacity: 0.3 }} />
+          <View style={{ position: 'absolute', width: 32, height: '25%', right: '30%', top: 0, backgroundColor: '#6B7280', opacity: 0.5, transform: [{ scaleY: -1 }] }} />
+          <View style={{ position: 'absolute', width: 32, height: '35%', left: 0, top: '10%', backgroundColor: '#6B7280', opacity: 0.3, transform: [{ scaleY: -1 }] }} />
 
-        {/* Quote Frame */}
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: '4.5%' }}>
-          <Text style={{
-            fontFamily: 'Inter',
-            fontWeight: '600',
-            fontSize: 24,
-            lineHeight: 29,
-            textAlign: 'center',
-            color: '#FFFFFF'
-          }}>
-            Manage Your appointments with precision, transforming the way you connect with your patients.
-          </Text>
+          {/* Quote Frame */}
+          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: '4.5%' }}>
+            <Text style={{
+              fontFamily: 'Inter',
+              fontWeight: '600',
+              fontSize: scale(24),
+              lineHeight: scale(29),
+              textAlign: 'center',
+              color: '#FFFFFF'
+            }}>
+              Manage Your appointments with precision, transforming the way you connect with your patients.
+            </Text>
+          </View>
         </View>
-
-        {/* Home Indicator */}
-        <View style={{ position: 'absolute', bottom: insets.bottom + 8, left: (SCREEN_WIDTH - 134) / 2, width: 134, height: 5, backgroundColor: '#FFFFFF', borderRadius: 2.5 }} />
-      </View>
+      </ResponsiveWrapper>
     );
   }
 
+
+
   return (
-    <View style={{ flex: 1, backgroundColor: '#F8FAFC' }}>
+    <ResponsiveWrapper dark={isDarkTheme}>
       <StatusBar style={isDarkTheme ? "light" : "dark"} />
 
-      <Animated.View style={{ flex: 1, width: '100%', height: '100%', opacity: fadeAnim }}>
+      <Animated.View style={{ flex: 1, width: '100%', opacity: fadeAnim }}>
         <ImageBackground
           source={getBackgroundImage()}
           style={{ flex: 1, alignItems: 'center' }}
@@ -748,22 +761,22 @@ function AppContent() {
 
           {/* Content Overlay */}
           {(step >= 3) && (
-            <Animated.View style={{ opacity: overlayAnim, flex: 1, width: '100%', justifyContent: 'flex-end', paddingBottom: insets.bottom + 60, paddingHorizontal: '4.5%' }}>
+            <Animated.View style={{ opacity: overlayAnim, flex: 1, width: '100%', justifyContent: 'flex-end', paddingBottom: insets.bottom + scale(60), paddingHorizontal: '4.5%' }}>
 
               {/* Main Text Frame - Replaced absolute top with flex layout */}
-              <View style={{ alignItems: 'center', gap: 32, marginBottom: '25%' }}>
+              <View style={{ alignItems: 'center', gap: scale(32), marginBottom: '25%' }}>
 
                 {/* Plain Black Logo Icon Square */}
-                <View style={{ width: 48, height: 48, backgroundColor: '#000000', alignItems: 'center', justifyContent: 'center' }} />
+                <View style={{ width: scale(48), height: scale(48), backgroundColor: '#000000', alignItems: 'center', justifyContent: 'center' }} />
 
 
-                <View style={{ width: '100%', gap: 12, alignItems: 'center' }}>
+                <View style={{ width: '100%', gap: scale(12), alignItems: 'center' }}>
                   <Text style={{
                     fontFamily: 'Inter',
                     fontStyle: 'semibold',
                     fontWeight: '600',
-                    fontSize: 24,
-                    lineHeight: 29,
+                    fontSize: scale(24),
+                    lineHeight: scale(29),
                     textAlign: 'center',
                     color: '#FFFFFF'
                   }}>
@@ -773,8 +786,8 @@ function AppContent() {
                     fontFamily: 'Inter',
                     fontStyle: 'regular',
                     fontWeight: '400',
-                    fontSize: 16,
-                    lineHeight: 19,
+                    fontSize: scale(16),
+                    lineHeight: scale(19),
                     textAlign: 'center',
                     color: '#ffffff8f'
                   }}>
@@ -784,7 +797,7 @@ function AppContent() {
               </View>
 
               {/* Roles Frame - Replaced absolute top with flex layout */}
-              <View style={{ flexDirection: 'row', justifyContent: 'center', gap: 13, width: '100%' }}>
+              <View style={{ flexDirection: 'row', justifyContent: 'center', gap: scale(13), width: '100%' }}>
                 <RoleButton
                   title="I'm a Doctor"
                   subtitle="Manage Patient,appointments & reports"
@@ -793,7 +806,7 @@ function AppContent() {
                 <RoleButton
                   title="I'm a Patient"
                   subtitle="Book appointments & consult doctors"
-                  onPress={() => setCurrentScreen('signin')}
+                  onPress={() => setCurrentScreen('signup')}
                 />
               </View>
             </Animated.View>
@@ -801,9 +814,8 @@ function AppContent() {
 
         </ImageBackground>
       </Animated.View>
-
-      {/* Home Indicator */}
-      <View style={{ position: 'absolute', bottom: insets.bottom + 8, left: (SCREEN_WIDTH - 134) / 2, width: 134, height: 5, backgroundColor: '#1F2937', borderRadius: 2.5 }} />
-    </View>
+    </ResponsiveWrapper>
   );
 }
+
+
