@@ -677,17 +677,17 @@ const HomeScreen = ({ onBack }) => {
                 <View key={index} style={{
                   width: scale(56),
                   height: scale(77),
-                  backgroundColor: item.active ? '#F3F4F6' : '#F3F4F6',
-                  borderRadius: 8,
+                  backgroundColor: '#F3F4F6',
+                  borderRadius: 12, // More rounded
                   borderWidth: 1,
                   borderColor: item.active ? '#432C81' : '#E5E7EB',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  gap: scale(6)
+                  gap: scale(4)
                 }}>
-                  <Text style={{ fontFamily: 'Inter', fontWeight: '600', fontSize: scale(14), color: item.active ? '#432C81' : '#6B7280' }}>{item.day}</Text>
+                  <Text style={{ fontFamily: 'Inter', fontWeight: '600', fontSize: scale(14), color: '#6B7280' }}>{item.day}</Text>
                   <Text style={{ fontFamily: 'Inter', fontWeight: '600', fontSize: scale(20), color: item.active ? '#432C81' : '#6B7280' }}>{item.date}</Text>
-                  <View style={{ width: scale(8), height: scale(8), borderRadius: scale(4), backgroundColor: item.active ? '#432C81' : '#6B7280' }} />
+                  <View style={{ width: scale(6), height: scale(6), borderRadius: scale(3), backgroundColor: item.active ? '#432C81' : '#D1D5DB', marginTop: scale(2) }} />
                 </View>
               ))}
             </View>
@@ -712,26 +712,25 @@ const HomeScreen = ({ onBack }) => {
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: scale(16) }}>
               <Text style={{ fontFamily: 'Inter', fontWeight: '600', fontSize: scale(14), color: '#1F2937' }}>Upcoming Schedule</Text>
             </View>
-            <View style={{ backgroundColor: '#432C81', borderRadius: 12, padding: scale(12), gap: scale(12) }}>
+            <View style={{ backgroundColor: '#432C81', borderRadius: 12, padding: scale(16), gap: scale(20) }}>
+              {/* Top Row: Profile + Info + Button */}
               <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                 <View style={{ flexDirection: 'row', alignItems: 'center', gap: scale(12) }}>
                   <ImageBackground source={upcomingSchedule.image} style={{ width: scale(56), height: scale(56), borderRadius: scale(28), backgroundColor: '#E5E7EB', overflow: 'hidden' }} />
                   <View>
-                    <Text style={{ fontFamily: 'Inter', fontWeight: '600', fontSize: scale(14), color: '#FFFFFF' }}>{upcomingSchedule.name}</Text>
-                    <Text style={{ fontFamily: 'Inter', fontWeight: '400', fontSize: scale(14), color: '#E5E7EB' }}>{upcomingSchedule.info}</Text>
+                    <Text style={{ fontFamily: 'Inter', fontWeight: '600', fontSize: scale(16), color: '#FFFFFF' }}>{upcomingSchedule.name}</Text>
+                    <Text style={{ fontFamily: 'Inter', fontWeight: '400', fontSize: scale(14), color: '#E5E7EB', opacity: 0.8 }}>{upcomingSchedule.info}</Text>
                   </View>
                 </View>
-                <View style={{ alignItems: 'center' }}>
-                  <View style={{ flexDirection: 'row', alignItems: 'center', gap: scale(4) }}>
-                    <Ionicons name="time" size={scale(16)} color="#FFFFFF" />
-                    <Text style={{ fontFamily: 'Inter', fontWeight: '600', fontSize: scale(14), color: '#FFFFFF' }}>{upcomingSchedule.time}</Text>
-                  </View>
-                </View>
-              </View>
-              <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
-                <TouchableOpacity style={{ backgroundColor: 'rgba(255, 255, 255, 0.25)', paddingHorizontal: scale(19), paddingVertical: scale(9), borderRadius: 999, flexDirection: 'row', alignItems: 'center', gap: scale(10) }}>
+                <TouchableOpacity style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)', paddingHorizontal: scale(16), paddingVertical: scale(8), borderRadius: 20 }}>
                   <Text style={{ fontFamily: 'Inter', fontWeight: '600', fontSize: scale(14), color: '#FFFFFF' }}>Call Now</Text>
                 </TouchableOpacity>
+              </View>
+
+              {/* Bottom Row: Time */}
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: scale(8) }}>
+                <Ionicons name="time" size={scale(18)} color="#FFFFFF" />
+                <Text style={{ fontFamily: 'Inter', fontWeight: '600', fontSize: scale(14), color: '#FFFFFF' }}>{upcomingSchedule.time}</Text>
               </View>
             </View>
           </View>
