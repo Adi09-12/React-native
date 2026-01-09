@@ -777,7 +777,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onBack }) => {
                   justifyContent: 'center',
                   gap: scale(4)
                 }}>
-                  <Text style={{ fontFamily: 'Inter', fontWeight: '600', fontSize: scale(14), color: '#6B7280' }}>{item.day}</Text>
+                  <Text style={{ fontFamily: 'Inter', fontWeight: '600', fontSize: 14, color: '#6B7280' }}>{item.day}</Text>
                   <Text style={{ fontFamily: 'Inter', fontWeight: '600', fontSize: scale(20), color: item.active ? '#432C81' : '#6B7280' }}>{item.date}</Text>
                   <View style={{ width: scale(6), height: scale(6), borderRadius: scale(3), backgroundColor: item.active ? '#432C81' : '#D1D5DB', marginTop: scale(2) }} />
                 </View>
