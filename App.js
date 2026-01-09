@@ -653,7 +653,7 @@ const HomeScreen = ({ onBack }) => {
               />
               <View>
                 <View style={{ flexDirection: 'row', alignItems: 'center', gap: scale(4) }}>
-                  <Text style={{ fontFamily: 'Inter', fontWeight: '600', fontSize: scale(20), color: '#111827' }}>Hello Kaori</Text>
+                  <Text style={{ fontFamily: 'Inter', fontWeight: '600', fontSize: scale(20), color: '#111827' }}>Hello, John!</Text>
                   <Text style={{ fontSize: scale(20) }}>👋</Text>
                 </View>
                 <View style={{ flexDirection: 'row', alignItems: 'center', gap: scale(4) }}>
@@ -702,7 +702,7 @@ const HomeScreen = ({ onBack }) => {
             <View style={{ width: scale(75), height: scale(75), justifyContent: 'center', alignItems: 'center' }}>
               {/* Placeholder for Circular Progress */}
               <View style={{ width: scale(70), height: scale(70), borderRadius: scale(35), borderWidth: scale(6), borderColor: '#F3F4F6' }} />
-              <View style={{ position: 'absolute', width: scale(70), height: scale(70), borderRadius: scale(35), borderWidth: scale(6), borderColor: '#432C81', borderLeftColor: 'transparent', borderBottomColor: 'transparent', transform: [{ rotate: '-45deg' }] }} />
+              <View style={{ position: 'absolute', width: scale(70), height: scale(70), borderRadius: scale(35), borderWidth: scale(6), borderColor: '#432C81', borderLeftColor: 'transparent', borderBottomColor: 'transparent', transform: [{ rotate: '70deg' }] }} />
               <Text style={{ position: 'absolute', fontFamily: 'Inter', fontWeight: '600', fontSize: scale(24), color: '#432C81' }}>4</Text>
             </View>
           </View>
@@ -738,7 +738,7 @@ const HomeScreen = ({ onBack }) => {
           {/* Action Grid */}
           <View style={{ flexDirection: 'row', flexWrap: 'wrap', paddingHorizontal: scale(16), gap: scale(17), paddingBottom: scale(20) }}>
             <ActionCard icon="calendar-outline" count="5" label="Reschedule" color="#432C81" />
-            <ActionCard icon="people-outline" count="10 (3)" label="Patients List" color="#432C81" />
+            <ActionCard icon="people-outline" count={<>10 <Text style={{ color: '#CA3A52' }}>(3)</Text></>} label="Patients List" color="#432C81" />
             <ActionCard icon="person-remove-outline" count="1,567" label="Reject" color="#432C81" />
             <ActionCard icon="clipboard-outline" count="1,567" label="Complete" color="#432C81" />
           </View>
