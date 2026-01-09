@@ -1,6 +1,6 @@
 import "./global.css";
 import { StatusBar } from 'expo-status-bar';
-import { Text, View, ImageBackground, TouchableOpacity, Animated, Dimensions, TextInput, ScrollView, StyleSheet, SafeAreaView } from 'react-native';
+import { Text, View, Image, ImageBackground, TouchableOpacity, Animated, Dimensions, TextInput, ScrollView, StyleSheet, SafeAreaView } from 'react-native';
 import { useEffect, useState, useRef } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -600,10 +600,14 @@ const CategorySearchScreen = ({ onBack, onSelect }) => {
 
 // --- Home Screen ---
 
-const ActionCard = ({ icon, count, label, color }) => (
+const ActionCard = ({ icon, image, count, label, color }) => (
   <View style={{ width: (Dimensions.get('window').width - scale(32 + 17)) / 2, height: scale(115), backgroundColor: '#FFFFFF', borderRadius: 8, borderWidth: 1, borderColor: '#E5E7EB', alignItems: 'center', justifyContent: 'center', gap: scale(7) }}>
     <View style={{ width: scale(30), height: scale(30), alignItems: 'center', justifyContent: 'center' }}>
-      <Ionicons name={icon} size={24} color={color} />
+      {image ? (
+        <Image source={image} style={{ width: scale(24), height: scale(24) }} resizeMode="contain" />
+      ) : (
+        <Ionicons name={icon} size={24} color={color} />
+      )}
     </View>
     <Text style={{ fontFamily: 'Inter', fontWeight: '600', fontSize: scale(14), color: '#1F2937' }}>{label}</Text>
     <Text style={{ fontFamily: 'Inter', fontWeight: '400', fontSize: scale(16), color: '#111827' }}>{count}</Text>
@@ -663,8 +667,8 @@ const HomeScreen = ({ onBack }) => {
             </View>
             <View style={{ width: scale(40), height: scale(40), alignItems: 'center', justifyContent: 'center' }}>
               <View style={{ width: scale(40), height: scale(40), borderRadius: scale(20), borderWidth: 1, borderColor: '#4B5563', alignItems: 'center', justifyContent: 'center', backgroundColor: '#FFFFFF' }}>
-                <Ionicons name="notifications-outline" size={scale(24)} color="#1D202F" />
-                <View style={{ position: 'absolute', top: scale(8), right: scale(8), width: scale(10), height: scale(10), borderRadius: scale(5), backgroundColor: '#CA3A52', borderWidth: 2, borderColor: '#FFFFFF' }} />
+                <Image source={require('./assets/icon_bell.png')} style={{ width: scale(24), height: scale(24) }} resizeMode="contain" />
+                <Image source={require('./assets/icon_badge.png')} style={{ position: 'absolute', top: scale(0), right: scale(0), width: scale(16), height: scale(16) }} resizeMode="contain" />
               </View>
             </View>
           </View>
@@ -737,10 +741,10 @@ const HomeScreen = ({ onBack }) => {
 
           {/* Action Grid */}
           <View style={{ flexDirection: 'row', flexWrap: 'wrap', paddingHorizontal: scale(16), gap: scale(17), paddingBottom: scale(20) }}>
-            <ActionCard icon="calendar-outline" count="5" label="Reschedule" color="#432C81" />
-            <ActionCard icon="people-outline" count={<>10 <Text style={{ color: '#CA3A52' }}>(3)</Text></>} label="Patients List" color="#432C81" />
-            <ActionCard icon="person-remove-outline" count="1,567" label="Reject" color="#432C81" />
-            <ActionCard icon="clipboard-outline" count="1,567" label="Complete" color="#432C81" />
+            <ActionCard image={require('./assets/icon_reschedule.png')} count="5" label="Reschedule" color="#432C81" />
+            <ActionCard image={require('./assets/icon_patients.png')} count={<Text>10 <Text style={{ color: '#CA3A52' }}>(3)</Text></Text>} label="Patients List" color="#432C81" />
+            <ActionCard image={require('./assets/icon_reject.png')} count="1,567" label="Reject" color="#432C81" />
+            <ActionCard image={require('./assets/icon_complete.png')} count="1,567" label="Complete" color="#432C81" />
           </View>
 
         </ScrollView>
