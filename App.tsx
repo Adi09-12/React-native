@@ -685,7 +685,7 @@ const CategorySearchScreen: React.FC<CategorySearchScreenProps> = ({ onBack, onS
 // --- Home Screen ---
 
 const ActionCard: React.FC<ActionCardProps> = ({ icon, image, count, label, color }) => (
-  <View style={{ width: (Dimensions.get('window').width - scale(32 + 17)) / 2, height: scale(115), backgroundColor: '#FFFFFF', borderRadius: 8, borderWidth: 1, borderColor: '#E5E7EB', alignItems: 'center', justifyContent: 'center', gap: scale(7) }}>
+  <View style={{ width: '47%', height: scale(115), backgroundColor: '#FFFFFF', borderRadius: 8, borderWidth: 1, borderColor: '#E5E7EB', alignItems: 'center', justifyContent: 'center', gap: scale(7) }}>
     <View style={{ width: scale(30), height: scale(30), alignItems: 'center', justifyContent: 'center' }}>
       {image ? (
         <Image source={image} style={{ width: scale(24), height: scale(24) }} resizeMode="contain" />
