@@ -193,7 +193,11 @@ const SignInScreen = ({ onSignUpClick, onSignIn, onBack }) => {
           </View>
         </View>
       </ScrollView>
+
+      {/* Home Indicator */}
+      <View style={{ position: 'absolute', bottom: insets.bottom + 8, left: '50%', transform: [{ translateX: -67 }], width: 134, height: 5, backgroundColor: '#1F2937', borderRadius: 2.5 }} />
     </ResponsiveWrapper>
+
 
 
   );
@@ -306,6 +310,9 @@ const SignUpScreen = ({ onSignInClick, onSignUp, onBack }) => {
           </View>
         </View>
       </ScrollView>
+
+      {/* Home Indicator */}
+      <View style={{ position: 'absolute', bottom: insets.bottom + 8, left: '50%', transform: [{ translateX: -67 }], width: 134, height: 5, backgroundColor: '#1F2937', borderRadius: 2.5 }} />
     </ResponsiveWrapper>
   );
 };
@@ -376,6 +383,9 @@ const KYCScreen = ({ onBack, onSubmit }) => {
           </View>
         </View>
       </ScrollView>
+
+      {/* Home Indicator */}
+      <View style={{ position: 'absolute', bottom: insets.bottom + 8, left: '50%', transform: [{ translateX: -67 }], width: 134, height: 5, backgroundColor: '#1F2937', borderRadius: 2.5 }} />
     </ResponsiveWrapper>
   );
 };
@@ -414,7 +424,7 @@ const ProfileInput = ({ label, placeholder, multiline, height = scale(51), isDro
 );
 
 
-const ProfileManagementScreen = ({ onBack, onOpenSearch, selectedCategory }) => {
+const ProfileManagementScreen = ({ onBack, onOpenSearch, selectedCategory, onContinue }) => {
   const insets = useSafeAreaInsets();
 
   return (
@@ -486,7 +496,7 @@ const ProfileManagementScreen = ({ onBack, onOpenSearch, selectedCategory }) => 
             <ProfileInput label="Select Country" placeholder="Japan" isDropdown />
             <ProfileInput label="Select Gender" placeholder="Select" isDropdown />
 
-            <TouchableOpacity style={{ height: 56, backgroundColor: '#432C81', borderRadius: 8, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 14, marginTop: 10 }}>
+            <TouchableOpacity style={{ height: 56, backgroundColor: '#432C81', borderRadius: 8, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 14, marginTop: 10 }} onPress={onContinue}>
               <Text style={{ color: '#FFFFFF', fontSize: 16, fontWeight: '600', lineHeight: 19 }}>Continue</Text>
               <Ionicons name="arrow-forward-outline" size={24} color="white" />
             </TouchableOpacity>
@@ -494,6 +504,9 @@ const ProfileManagementScreen = ({ onBack, onOpenSearch, selectedCategory }) => 
 
         </View>
       </ScrollView>
+
+      {/* Home Indicator */}
+      <View style={{ position: 'absolute', bottom: insets.bottom + 8, left: '50%', transform: [{ translateX: -67 }], width: 134, height: 5, backgroundColor: '#1F2937', borderRadius: 2.5 }} />
     </ResponsiveWrapper>
   );
 };
@@ -578,9 +591,187 @@ const CategorySearchScreen = ({ onBack, onSelect }) => {
           </View>
         </ScrollView>
       </View>
+
+      {/* Home Indicator */}
+      <View style={{ position: 'absolute', bottom: insets.bottom + 8, left: '50%', transform: [{ translateX: -67 }], width: 134, height: 5, backgroundColor: '#1F2937', borderRadius: 2.5 }} />
     </ResponsiveWrapper>
   );
 };
+
+// --- Home Screen ---
+
+const ActionCard = ({ icon, count, label, color }) => (
+  <View style={{ width: (Dimensions.get('window').width - scale(32 + 17)) / 2, height: scale(115), backgroundColor: '#FFFFFF', borderRadius: 8, borderWidth: 1, borderColor: '#E5E7EB', alignItems: 'center', justifyContent: 'center', gap: scale(7) }}>
+    <View style={{ width: scale(30), height: scale(30), alignItems: 'center', justifyContent: 'center' }}>
+      <Ionicons name={icon} size={24} color={color} />
+    </View>
+    <Text style={{ fontFamily: 'Inter', fontWeight: '600', fontSize: scale(14), color: '#1F2937' }}>{label}</Text>
+    <Text style={{ fontFamily: 'Inter', fontWeight: '400', fontSize: scale(16), color: '#111827' }}>{count}</Text>
+  </View>
+);
+
+const TabIcon = ({ icon, active, onPress }) => (
+  <TouchableOpacity onPress={onPress} style={{ alignItems: 'center', justifyContent: 'center', flex: 1, height: '100%' }}>
+    {active && <View style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 4, backgroundColor: '#432C81' }} />}
+    <Ionicons name={icon} size={24} color={active ? '#432C81' : '#6B7280'} />
+  </TouchableOpacity>
+);
+
+const HomeScreen = ({ onBack }) => {
+  const insets = useSafeAreaInsets();
+  const [activeTab, setActiveTab] = useState('home');
+
+  const upcomingSchedule = {
+    name: "Emily James",
+    info: "26 Years : Female",
+    time: "11:35 AM",
+    image: require('./assets/profile_emily.png') // Local asset
+  };
+
+  const dates = [
+    { day: "Mon", date: "11" },
+    { day: "Tue", date: "12" },
+    { day: "Wed", date: "13", active: true },
+    { day: "Thu", date: "14" },
+    { day: "Fri", date: "15" },
+    { day: "Sat", date: "16" },
+  ];
+
+  return (
+    <ResponsiveWrapper>
+      <StatusBar style="dark" />
+      <View style={{ flex: 1, backgroundColor: '#F8FAFC' }}>
+
+        <ScrollView contentContainerStyle={{ paddingBottom: scale(100) }} showsVerticalScrollIndicator={false}>
+
+          {/* Header */}
+          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: scale(16), paddingTop: insets.top + scale(16), marginBottom: scale(24) }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: scale(12) }}>
+              <ImageBackground
+                source={require('./assets/profile_kaori.png')} // Local asset
+                style={{ width: scale(53), height: scale(53), borderRadius: scale(26.5), backgroundColor: '#E5E7EB', overflow: 'hidden' }}
+              />
+              <View>
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: scale(4) }}>
+                  <Text style={{ fontFamily: 'Inter', fontWeight: '600', fontSize: scale(20), color: '#111827' }}>Hello Kaori</Text>
+                  <Text style={{ fontSize: scale(20) }}>👋</Text>
+                </View>
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: scale(4) }}>
+                  <Text style={{ fontFamily: 'Poppins', fontWeight: '500', fontSize: scale(12), color: '#111827' }}>How're you today</Text>
+                </View>
+              </View>
+            </View>
+            <View style={{ width: scale(40), height: scale(40), alignItems: 'center', justifyContent: 'center' }}>
+              <View style={{ width: scale(40), height: scale(40), borderRadius: scale(20), borderWidth: 1, borderColor: '#4B5563', alignItems: 'center', justifyContent: 'center', backgroundColor: '#FFFFFF' }}>
+                <Ionicons name="notifications-outline" size={scale(24)} color="#1D202F" />
+                <View style={{ position: 'absolute', top: scale(8), right: scale(8), width: scale(10), height: scale(10), borderRadius: scale(5), backgroundColor: '#CA3A52', borderWidth: 2, borderColor: '#FFFFFF' }} />
+              </View>
+            </View>
+          </View>
+
+          {/* Today Appointments */}
+          <View style={{ paddingHorizontal: scale(16), marginBottom: scale(24) }}>
+            <Text style={{ fontFamily: 'Inter', fontWeight: '600', fontSize: scale(20), color: '#111827', marginBottom: scale(16) }}>Today Appointments</Text>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+              {dates.map((item, index) => (
+                <View key={index} style={{
+                  width: scale(56),
+                  height: scale(77),
+                  backgroundColor: item.active ? '#F3F4F6' : '#F3F4F6',
+                  borderRadius: 8,
+                  borderWidth: 1,
+                  borderColor: item.active ? '#432C81' : '#E5E7EB',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: scale(6)
+                }}>
+                  <Text style={{ fontFamily: 'Inter', fontWeight: '600', fontSize: scale(14), color: item.active ? '#432C81' : '#6B7280' }}>{item.day}</Text>
+                  <Text style={{ fontFamily: 'Inter', fontWeight: '600', fontSize: scale(20), color: item.active ? '#432C81' : '#6B7280' }}>{item.date}</Text>
+                  <View style={{ width: scale(8), height: scale(8), borderRadius: scale(4), backgroundColor: item.active ? '#432C81' : '#6B7280' }} />
+                </View>
+              ))}
+            </View>
+          </View>
+
+          {/* Consults for today */}
+          <View style={{ marginHorizontal: scale(16), padding: scale(10), height: scale(95), backgroundColor: '#FFFFFF', borderRadius: 12, borderWidth: 1, borderColor: '#E5E7EB', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: scale(24) }}>
+            <View style={{ gap: scale(8) }}>
+              <Text style={{ fontFamily: 'Inter', fontWeight: '600', fontSize: scale(20), color: '#111827' }}>Consults <Text style={{ fontWeight: '400' }}>for today</Text></Text>
+              <Text style={{ fontFamily: 'Inter', fontWeight: '500', fontSize: scale(12), color: '#111827' }}>5 of 9 Completed</Text>
+            </View>
+            <View style={{ width: scale(75), height: scale(75), justifyContent: 'center', alignItems: 'center' }}>
+              {/* Placeholder for Circular Progress */}
+              <View style={{ width: scale(70), height: scale(70), borderRadius: scale(35), borderWidth: scale(6), borderColor: '#F3F4F6' }} />
+              <View style={{ position: 'absolute', width: scale(70), height: scale(70), borderRadius: scale(35), borderWidth: scale(6), borderColor: '#432C81', borderLeftColor: 'transparent', borderBottomColor: 'transparent', transform: [{ rotate: '-45deg' }] }} />
+              <Text style={{ position: 'absolute', fontFamily: 'Inter', fontWeight: '600', fontSize: scale(24), color: '#432C81' }}>4</Text>
+            </View>
+          </View>
+
+          {/* Upcoming Schedule */}
+          <View style={{ paddingHorizontal: scale(16), marginBottom: scale(24) }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: scale(16) }}>
+              <Text style={{ fontFamily: 'Inter', fontWeight: '600', fontSize: scale(14), color: '#1F2937' }}>Upcoming Schedule</Text>
+            </View>
+            <View style={{ backgroundColor: '#432C81', borderRadius: 12, padding: scale(12), gap: scale(12) }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: scale(12) }}>
+                  <ImageBackground source={upcomingSchedule.image} style={{ width: scale(56), height: scale(56), borderRadius: scale(28), backgroundColor: '#E5E7EB', overflow: 'hidden' }} />
+                  <View>
+                    <Text style={{ fontFamily: 'Inter', fontWeight: '600', fontSize: scale(14), color: '#FFFFFF' }}>{upcomingSchedule.name}</Text>
+                    <Text style={{ fontFamily: 'Inter', fontWeight: '400', fontSize: scale(14), color: '#E5E7EB' }}>{upcomingSchedule.info}</Text>
+                  </View>
+                </View>
+                <View style={{ alignItems: 'center' }}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center', gap: scale(4) }}>
+                    <Ionicons name="time" size={scale(16)} color="#FFFFFF" />
+                    <Text style={{ fontFamily: 'Inter', fontWeight: '600', fontSize: scale(14), color: '#FFFFFF' }}>{upcomingSchedule.time}</Text>
+                  </View>
+                </View>
+              </View>
+              <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
+                <TouchableOpacity style={{ backgroundColor: 'rgba(255, 255, 255, 0.25)', paddingHorizontal: scale(19), paddingVertical: scale(9), borderRadius: 999, flexDirection: 'row', alignItems: 'center', gap: scale(10) }}>
+                  <Text style={{ fontFamily: 'Inter', fontWeight: '600', fontSize: scale(14), color: '#FFFFFF' }}>Call Now</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+
+          {/* Action Grid */}
+          <View style={{ flexDirection: 'row', flexWrap: 'wrap', paddingHorizontal: scale(16), gap: scale(17), paddingBottom: scale(20) }}>
+            <ActionCard icon="calendar-outline" count="5" label="Reschedule" color="#432C81" />
+            <ActionCard icon="people-outline" count="10 (3)" label="Patients List" color="#432C81" />
+            <ActionCard icon="person-remove-outline" count="1,567" label="Reject" color="#432C81" />
+            <ActionCard icon="clipboard-outline" count="1,567" label="Complete" color="#432C81" />
+          </View>
+
+        </ScrollView>
+
+        {/* Bottom Tab Bar */}
+        <View style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: scale(80),
+          backgroundColor: '#FFFFFF',
+          flexDirection: 'row',
+          justifyContent: 'space-around',
+          alignItems: 'center',
+          borderTopWidth: 1,
+          borderTopColor: '#F3F4F6',
+          paddingBottom: insets.bottom
+        }}>
+          <TabIcon icon="home" active={activeTab === 'home'} onPress={() => setActiveTab('home')} />
+          <TabIcon icon="calendar-outline" active={activeTab === 'calendar'} onPress={() => setActiveTab('calendar')} />
+          <TabIcon icon="chatbubble-ellipses-outline" active={activeTab === 'chat'} onPress={() => setActiveTab('chat')} />
+          <TabIcon icon="person-outline" active={activeTab === 'profile'} onPress={() => setActiveTab('profile')} />
+        </View>
+      </View>
+
+    </ResponsiveWrapper>
+  );
+};
+
 
 // --- Main App ---
 
@@ -663,7 +854,12 @@ function AppContent() {
       onBack={() => setCurrentScreen('kyc')}
       onOpenSearch={() => setCurrentScreen('search_category')}
       selectedCategory={selectedCategory}
+      onContinue={() => setCurrentScreen('home')}
     />;
+  }
+
+  if (currentScreen === 'home') {
+    return <HomeScreen onBack={() => setCurrentScreen('profile')} />;
   }
 
   if (currentScreen === 'search_category') {
