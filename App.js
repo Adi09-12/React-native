@@ -614,10 +614,14 @@ const ActionCard = ({ icon, image, count, label, color }) => (
   </View>
 );
 
-const TabIcon = ({ icon, active, onPress }) => (
+const TabIcon = ({ icon, image, active, onPress }) => (
   <TouchableOpacity onPress={onPress} style={{ alignItems: 'center', justifyContent: 'center', flex: 1, height: '100%' }}>
     {active && <View style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 4, backgroundColor: '#432C81' }} />}
-    <Ionicons name={icon} size={24} color={active ? '#432C81' : '#6B7280'} />
+    {image ? (
+      <Image source={image} style={{ width: scale(24), height: scale(24), tintColor: active ? '#432C81' : '#6B7280' }} resizeMode="contain" />
+    ) : (
+      <Ionicons name={icon} size={24} color={active ? '#432C81' : '#6B7280'} />
+    )}
   </TouchableOpacity>
 );
 
@@ -764,10 +768,10 @@ const HomeScreen = ({ onBack }) => {
           borderTopColor: '#F3F4F6',
           paddingBottom: insets.bottom
         }}>
-          <TabIcon icon="home" active={activeTab === 'home'} onPress={() => setActiveTab('home')} />
-          <TabIcon icon="calendar-outline" active={activeTab === 'calendar'} onPress={() => setActiveTab('calendar')} />
-          <TabIcon icon="chatbubble-ellipses-outline" active={activeTab === 'chat'} onPress={() => setActiveTab('chat')} />
-          <TabIcon icon="person-outline" active={activeTab === 'profile'} onPress={() => setActiveTab('profile')} />
+          <TabIcon image={require('./assets/icon_tab_home.png')} active={activeTab === 'home'} onPress={() => setActiveTab('home')} />
+          <TabIcon image={require('./assets/icon_tab_calendar.png')} active={activeTab === 'calendar'} onPress={() => setActiveTab('calendar')} />
+          <TabIcon image={require('./assets/icon_tab_chat.png')} active={activeTab === 'chat'} onPress={() => setActiveTab('chat')} />
+          <TabIcon image={require('./assets/icon_tab_profile.png')} active={activeTab === 'profile'} onPress={() => setActiveTab('profile')} />
         </View>
       </View>
 
