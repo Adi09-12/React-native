@@ -1,12 +1,95 @@
 import "./global.css";
 import { StatusBar } from 'expo-status-bar';
-import { Text, View, Image, ImageBackground, TouchableOpacity, Animated, Dimensions, TextInput, ScrollView, StyleSheet, SafeAreaView } from 'react-native';
+import { Text, View, Image, ImageBackground, TouchableOpacity, Animated, Dimensions, TextInput, ScrollView, StyleSheet, SafeAreaView, KeyboardTypeOptions, ImageSourcePropType, StyleProp, ViewStyle, Platform } from 'react-native';
 import { useEffect, useState, useRef } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 
-
 import { Ionicons } from '@expo/vector-icons';
+
+type IconName = React.ComponentProps<typeof Ionicons>['name'];
+
+interface RoleButtonProps {
+  title: string;
+  subtitle: string;
+  onPress: () => void;
+}
+
+interface AuthInputProps {
+  label: string;
+  placeholder: string;
+  isPassword?: boolean;
+  isError?: boolean;
+  value: string;
+  onChangeText: (text: string) => void;
+  keyboardType?: KeyboardTypeOptions;
+  iconName: IconName;
+}
+
+interface ResponsiveWrapperProps {
+  children: React.ReactNode;
+  style?: StyleProp<ViewStyle>;
+  dark?: boolean;
+}
+
+interface SignInScreenProps {
+  onSignUpClick: () => void;
+  onSignIn: () => void;
+  onBack: () => void;
+}
+
+interface SignUpScreenProps {
+  onSignInClick: () => void;
+  onSignUp: () => void;
+  onBack: () => void;
+}
+
+interface KYCScreenProps {
+  onBack: () => void;
+  onSubmit: () => void;
+}
+
+interface ProfileInputProps {
+  label: string;
+  placeholder: string;
+  multiline?: boolean;
+  height?: number;
+  isDropdown?: boolean;
+  value?: string;
+  onChangeText?: (text: string) => void;
+  pointerEvents?: 'auto' | 'none' | 'box-none' | 'box-only';
+}
+
+interface ProfileManagementScreenProps {
+  onBack: () => void;
+  onOpenSearch: () => void;
+  selectedCategory: string;
+  onContinue: () => void;
+}
+
+interface CategorySearchScreenProps {
+  onBack: () => void;
+  onSelect: (category: string) => void;
+}
+
+interface ActionCardProps {
+  icon?: IconName;
+  image?: ImageSourcePropType;
+  count: React.ReactNode | string;
+  label: string;
+  color: string;
+}
+
+interface TabIconProps {
+  icon?: IconName;
+  image?: ImageSourcePropType;
+  active: boolean;
+  onPress: () => void;
+}
+
+interface HomeScreenProps {
+  onBack: () => void;
+}
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 const CONTENT_WIDTH = '91%';
@@ -17,7 +100,7 @@ const scale = (size) => (SCREEN_WIDTH > MAX_CONTENT_WIDTH ? MAX_CONTENT_WIDTH : 
 
 // --- Helper Components ---
 
-const ResponsiveWrapper = ({ children, style, dark }) => (
+const ResponsiveWrapper: React.FC<ResponsiveWrapperProps> = ({ children, style, dark }) => (
   <View style={[{ flex: 1, backgroundColor: dark ? '#432C81' : '#F8FAFC', alignItems: 'center' }, style]}>
     <View style={{ width: '100%', maxWidth: MAX_CONTENT_WIDTH, flex: 1 }}>
       {children}
@@ -26,7 +109,7 @@ const ResponsiveWrapper = ({ children, style, dark }) => (
 );
 
 
-const RoleButton = ({ title, subtitle, onPress }) => (
+const RoleButton: React.FC<RoleButtonProps> = ({ title, subtitle, onPress }) => (
   <TouchableOpacity
     onPress={onPress}
     activeOpacity={0.8}
@@ -67,7 +150,7 @@ const RoleButton = ({ title, subtitle, onPress }) => (
 
 // --- Auth Input Component ---
 
-const AuthInput = ({ label, placeholder, isPassword, isError, value, onChangeText, keyboardType, iconName }) => {
+const AuthInput: React.FC<AuthInputProps> = ({ label, placeholder, isPassword, isError, value, onChangeText, keyboardType, iconName }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
@@ -85,7 +168,7 @@ const AuthInput = ({ label, placeholder, isPassword, isError, value, onChangeTex
       }}>
         <Ionicons name={iconName} size={24} color="#1D202F" style={{ marginRight: 8, opacity: 0.8 }} />
         <TextInput
-          style={{ flex: 1, color: '#111827', fontSize: 16, fontWeight: '600', height: '100%', outlineStyle: 'none' }}
+          style={[{ flex: 1, color: '#111827', fontSize: 16, fontWeight: '600', height: '100%' }, Platform.select({ web: { outlineStyle: 'none' } }) as any]}
           placeholder={placeholder}
           placeholderTextColor="#6B7280"
           secureTextEntry={isPassword && !showPassword}
@@ -112,7 +195,7 @@ const AuthInput = ({ label, placeholder, isPassword, isError, value, onChangeTex
 
 // --- SignIn Screen ---
 
-const SignInScreen = ({ onSignUpClick, onSignIn, onBack }) => {
+const SignInScreen: React.FC<SignInScreenProps> = ({ onSignUpClick, onSignIn, onBack }) => {
   const [email, setEmail] = useState('dco@gmail.com');
   const [password, setPassword] = useState('password123');
   const insets = useSafeAreaInsets();
@@ -206,7 +289,7 @@ const SignInScreen = ({ onSignUpClick, onSignIn, onBack }) => {
 
 // --- SignUp Screen ---
 
-const SignUpScreen = ({ onSignInClick, onSignUp, onBack }) => {
+const SignUpScreen: React.FC<SignUpScreenProps> = ({ onSignInClick, onSignUp, onBack }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -321,7 +404,7 @@ const SignUpScreen = ({ onSignInClick, onSignUp, onBack }) => {
 
 // --- KYC Screen ---
 
-const KYCScreen = ({ onBack, onSubmit }) => {
+const KYCScreen: React.FC<KYCScreenProps> = ({ onBack, onSubmit }) => {
   const insets = useSafeAreaInsets();
 
   return (
@@ -336,7 +419,7 @@ const KYCScreen = ({ onBack, onSubmit }) => {
         >
           <Ionicons name="chevron-back-outline" size={24} color="#1F2937" />
         </TouchableOpacity>
-        <Text style={{ fontFamily: 'Inter', fontWeight: '600', fontSize: scale(24), lineHeight: scale(29), fontStyle: 'semibold', color: '#111827', flex: 1 }}>
+        <Text style={{ fontFamily: 'Inter', fontWeight: '600', fontSize: scale(24), lineHeight: scale(29), color: '#111827', flex: 1 }}>
           Doctor Registration
         </Text>
       </View>
@@ -394,7 +477,7 @@ const KYCScreen = ({ onBack, onSubmit }) => {
 
 // --- Profile Management Screen ---
 
-const ProfileInput = ({ label, placeholder, multiline, height = scale(51), isDropdown, value, onChangeText }) => (
+const ProfileInput: React.FC<ProfileInputProps> = ({ label, placeholder, multiline, height = scale(51), isDropdown, value, onChangeText, pointerEvents }) => (
   <View style={{ width: '100%', gap: scale(8) }}>
     <Text style={{ fontFamily: 'Inter', fontWeight: '400', fontSize: scale(14), lineHeight: scale(17), color: '#111827' }}>{label}</Text>
     <View style={{
@@ -410,7 +493,7 @@ const ProfileInput = ({ label, placeholder, multiline, height = scale(51), isDro
       paddingVertical: multiline ? scale(16) : 0
     }}>
       <TextInput
-        style={{ flex: 1, color: '#111827', fontSize: scale(16), fontWeight: '600', outlineStyle: 'none', textAlignVertical: multiline ? 'top' : 'center' }}
+        style={[{ flex: 1, color: '#111827', fontSize: scale(16), fontWeight: '600', textAlignVertical: multiline ? 'top' : 'center' }, Platform.select({ web: { outlineStyle: 'none' } }) as any]}
         placeholder={placeholder}
         placeholderTextColor="#6B7280"
         multiline={multiline}
@@ -424,7 +507,7 @@ const ProfileInput = ({ label, placeholder, multiline, height = scale(51), isDro
 );
 
 
-const ProfileManagementScreen = ({ onBack, onOpenSearch, selectedCategory, onContinue }) => {
+const ProfileManagementScreen: React.FC<ProfileManagementScreenProps> = ({ onBack, onOpenSearch, selectedCategory, onContinue }) => {
   const insets = useSafeAreaInsets();
 
   return (
@@ -488,13 +571,14 @@ const ProfileManagementScreen = ({ onBack, onOpenSearch, selectedCategory, onCon
                   <Text style={{ fontSize: 16, color: '#1D202F' }}>$</Text>
                 </View>
                 <View style={{ flex: 1, height: 51, backgroundColor: '#F3F4F6', borderTopRightRadius: 8, borderBottomRightRadius: 8, borderWidth: 1, borderColor: '#E5E7EB', paddingHorizontal: 16, justifyContent: 'center' }}>
-                  <TextInput placeholder="00" placeholderTextColor="#6B7280" style={{ fontSize: 16, fontWeight: '600', color: '#111827', outlineStyle: 'none' }} />
+                  <TextInput placeholder="00" placeholderTextColor="#6B7280" style={[{ fontSize: 16, fontWeight: '600', color: '#111827' }, Platform.select({ web: { outlineStyle: 'none' } }) as any]} />
                 </View>
               </View>
             </View>
 
             <ProfileInput label="Select Country" placeholder="Japan" isDropdown />
             <ProfileInput label="Select Gender" placeholder="Select" isDropdown />
+
 
             <TouchableOpacity style={{ height: 56, backgroundColor: '#432C81', borderRadius: 8, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 14, marginTop: 10 }} onPress={onContinue}>
               <Text style={{ color: '#FFFFFF', fontSize: 16, fontWeight: '600', lineHeight: 19 }}>Continue</Text>
@@ -516,7 +600,7 @@ const ProfileManagementScreen = ({ onBack, onOpenSearch, selectedCategory, onCon
 
 // --- Category Search Screen ---
 
-const CategorySearchScreen = ({ onBack, onSelect }) => {
+const CategorySearchScreen: React.FC<CategorySearchScreenProps> = ({ onBack, onSelect }) => {
   const categories = [
     "Dentist",
     "Cardiologist",
@@ -566,7 +650,7 @@ const CategorySearchScreen = ({ onBack, onSelect }) => {
         }}>
           <Ionicons name="search-outline" size={24} color="#1D202F" />
           <TextInput
-            style={{ flex: 1, fontSize: scale(16), color: '#111827', outlineStyle: 'none' }}
+            style={[{ flex: 1, fontSize: scale(16), color: '#111827' }, Platform.select({ web: { outlineStyle: 'none' } }) as any]}
             placeholder="Search"
             placeholderTextColor="#6B7280"
           />
@@ -600,7 +684,7 @@ const CategorySearchScreen = ({ onBack, onSelect }) => {
 
 // --- Home Screen ---
 
-const ActionCard = ({ icon, image, count, label, color }) => (
+const ActionCard: React.FC<ActionCardProps> = ({ icon, image, count, label, color }) => (
   <View style={{ width: (Dimensions.get('window').width - scale(32 + 17)) / 2, height: scale(115), backgroundColor: '#FFFFFF', borderRadius: 8, borderWidth: 1, borderColor: '#E5E7EB', alignItems: 'center', justifyContent: 'center', gap: scale(7) }}>
     <View style={{ width: scale(30), height: scale(30), alignItems: 'center', justifyContent: 'center' }}>
       {image ? (
@@ -614,7 +698,7 @@ const ActionCard = ({ icon, image, count, label, color }) => (
   </View>
 );
 
-const TabIcon = ({ icon, image, active, onPress }) => (
+const TabIcon: React.FC<TabIconProps> = ({ icon, image, active, onPress }) => (
   <TouchableOpacity onPress={onPress} style={{ alignItems: 'center', justifyContent: 'center', flex: 1, height: '100%' }}>
     {active && <View style={{ position: 'absolute', top: 0, width: scale(40), height: 4, backgroundColor: '#432C81', borderBottomLeftRadius: 4, borderBottomRightRadius: 4 }} />}
     {image ? (
@@ -625,7 +709,7 @@ const TabIcon = ({ icon, image, active, onPress }) => (
   </TouchableOpacity>
 );
 
-const HomeScreen = ({ onBack }) => {
+const HomeScreen: React.FC<HomeScreenProps> = ({ onBack }) => {
   const insets = useSafeAreaInsets();
   const [activeTab, setActiveTab] = useState('home');
 
@@ -976,7 +1060,6 @@ function AppContent() {
                 <View style={{ width: '100%', gap: scale(12), alignItems: 'center' }}>
                   <Text style={{
                     fontFamily: 'Inter',
-                    fontStyle: 'semibold',
                     fontWeight: '600',
                     fontSize: scale(24),
                     lineHeight: scale(29),
@@ -987,7 +1070,6 @@ function AppContent() {
                   </Text>
                   <Text style={{
                     fontFamily: 'Inter',
-                    fontStyle: 'regular',
                     fontWeight: '400',
                     fontSize: scale(16),
                     lineHeight: scale(19),
